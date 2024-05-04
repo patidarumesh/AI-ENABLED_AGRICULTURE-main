@@ -1,0 +1,258 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Chat Bot</title>
+    <style>
+        /* Styles remain the same */
+    
+
+        .chat-container {
+            width: 60%;
+            margin: 50px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+
+
+        }
+
+        .chat-box {
+            overflow-y: scroll;
+            padding: 10px;
+            min-height: 100px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .bot-message {
+            background-color: white;
+            padding: 8px 12px;
+            color: rgb(48, 48, 48);
+            border-radius: 10px;
+            display: inline-block;
+            font-size: 16px;
+        }
+
+        .user-message {
+            background-color: #af9e4c;
+            max-width: 400px;
+            position: relative;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 40%);
+            padding: 10px;
+            border: none;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .send-div{
+            display: flex;
+        }
+        .send-div #send-btn{
+            width: 100px;
+            padding: 10px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .speech-btn {
+            width: 60px;
+            padding: 10px;
+            background-color: #4CAF50;
+
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        body {
+            background-color: #f2f2f2;
+            height: 100vh;
+            margin: 0%;
+            display: flex;
+            flex-direction: column;
+        
+        }
+
+
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        #top-bar {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 10px;
+            margin-top: 0px;
+            padding-top: 1%;
+            font-size: 35px;
+            font-weight: bold;
+            display: flex;
+        }
+        #top-bar-head {
+            margin-left: auto;
+            margin-right: auto;
+
+        }
+        .copy-btn {
+            padding: 10px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 20px;
+            margin-right: 1500px;
+            color: black;
+
+        }
+     
+
+        #top-bar {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 10px;
+            margin-top: 0px;
+            padding-top: 1%;
+            font-size: 35px;
+            font-weight: bold;
+            display: flex;
+        }
+        #top-bar-head {
+            margin-left: auto;
+            margin-right: auto;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="top-bar">
+        <div id="google_translate_element"></div>
+        <span id="top-bar-head">AI Enabled Agricultural Optimization</span>
+    </div>
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box">
+            <!-- Chat messages will be displayed here -->
+            <div class="bot-message">Hello! How can I assist you today?</div>
+        </div>
+        <div class="send-div">
+            <input type="text" id="user-input" placeholder="Type a message...">
+            <button class="speech-btn" onclick="runSpeechRecognition()">Speech</button>
+            <button id="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function runSpeechRecognition() {
+            var recognition = new webkitSpeechRecognition();
+            recognition.onstart = function() {
+                console.log('Speech recognition started...');
+            };
+            recognition.onresult = function(event) {
+                var transcript = event.results[0][0].transcript;
+                document.getElementById("user-input").value = transcript;
+            };
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+            };
+            recognition.start();
+        }
+
+        function sendMessage() {
+            var userInput = document.getElementById("user-input").value;
+            if (userInput !== "") {
+                appendMessage("user", userInput);
+                document.getElementById("user-input").value = "";
+
+                // Send user message to the backend
+                fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: userInput })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Display response from the backend
+                    var botResponse = data.response;
+                    appendMessage("bot", botResponse);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+
+        function appendMessage(sender, message) {
+    var chatBox = document.getElementById("chat-box");
+    var messageDiv = document.createElement("div");
+    messageDiv.className = "chat-message";
+    var messageContent = document.createElement("div");
+    messageContent.className = sender + "-message";
+    messageContent.textContent = message;
+    messageDiv.appendChild(messageContent);
+
+    // Add copy button with Font Awesome icon
+    var copyButton = document.createElement("button");
+    copyButton.className = "copy-btn";
+    messageDiv.appendChild(copyButton);
+    var icon = document.createElement("i");
+    icon.className = "fa-regular fa-clipboard";
+    copyButton.appendChild(icon);
+    copyButton.onclick = function() {
+        copyToClipboard(message);
+    };
+    messageDiv.appendChild(copyButton);
+
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+
+function copyToClipboard(text) {
+    var textField = document.createElement("textarea");
+    textField.innerText = text;
+    document.body.appendChild(textField);
+    textField.select();
+    document.execCommand("copy");
+    textField.remove();
+}
+
+
+        // Add event listener to input field for Enter key press
+        document.getElementById("user-input").addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                document.getElementById("send-btn").click();
+            }
+        });
+    </script>
+</body>
+
+</html>

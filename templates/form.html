@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Farming using Machine Learning</title>
+    <style>
+        body {
+            background-color: rgb(255, 255, 255);
+            height: 100vh;
+            margin: 0%;
+        }
+
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        #top-bar {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 10px;
+            margin-top: 0px;
+            padding-top: 1%;
+            font-size: 35px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #inputs {
+            display: grid;
+            margin-top: 1%;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-gap: 10px;
+            margin-left: 1%;
+            
+        }
+
+        #inputs input[type="text"] {
+            margin-top: 1%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #inputs input[type="text"]:focus {
+            outline: none;
+            border-color: dodgerblue;
+            box-shadow: 0 0 5px dodgerblue;
+        }
+        #submit {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    /* padding: 3%; */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+}
+
+#submit:hover {
+    background-color: #d04949; /* Darker Green */
+}
+    
+#output {
+    margin-top: 1%;
+    margin-left: 1%;
+    padding: 10px;
+    /* border: 1px solid #ccc; */
+    border-radius: 5px;
+    font-size: 16px;
+}
+    </style>
+</head>
+<body>
+    <div id="top-bar">
+        Smart Farming using Machine Learning</div>
+        
+    <form id="inputs" action="{{ url_for("crop_data")}}" method="post">
+        <label for="nitrogen"> Nitrogen:</label>
+        <input type="text" id="nitrogen" name="nitrogen" >
+        <label for="phosphorus">Phosphorus:</label>
+        <input type="text" id="phosphorus" name="phosphorus" >
+        <label for="potassium">Potassium:</label>
+        <input type="text" id="potassium" name="potassium">
+        <label for="temperature">Temperature:</label>
+        <input type="text" id="temperature" name="temperature">
+        <label for="humidity">Humidity:</label>
+        <input type="text" id="humidity" name="humidity" >
+        <label for="rainfall">Rainfall:</label>
+        <input type="text" id="rainfall" name="rainfall">
+        <label for="ph">pH:</label>
+        <input type="text" id="ph" name="ph" >
+        <button type="submit">Submit</button>
+    </form>
+    <div id="output">
+        {% if a %}<h4>Crop Name : </h4><p >{{a}}</p>{% endif %}
+        {% if spacing %}<h4>Spacing : </h4><p >{{spacing}}</p>{% endif %}
+        {% if timeofsowing %}<h4>Time of Sowing : </h4><p >{{timeofsowing}}</p>{% endif %}
+        {% if methodofsowing %}<h4>Method of Sowing : </h4><p >{{methodofsowing}}</p>{% endif %}
+        {% if timeofwater %}<h4>Time of Water : </h4><p >{{timeofwater}}</p>{% endif %}
+        {% if nutrientrecommendation %}<h4>Nutrient Recommendation : </h4><p >{{nutrientrecommendation}}</p>{% endif %}
+        {% if weedmanagement %}<h4>Weed Management : </h4><p >{{weedmanagement}}</p>{% endif %}
+        {% if insectmanagement %}<h4>Insect Management : </h4><p >{{insectmanagement}}</p>{% endif %}
+        {% if diseasemanagement %}<h4>Disease Management : </h4><p >{{diseasemanagement}}</p>{% endif %}
+        {% if strawyield %}<h4>Straw Yield : </h4><p >{{strawyield}}</p>{% endif %}
+
+
+    </div>
+</body>
+</html>
+
+    

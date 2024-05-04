@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <title>AI Enabled Agricultural Optimization</title>
+    
+    <style>
+        body {
+            background-color: #f2f2f2;
+            height: 100vh;
+            margin: 0%;
+            display: flex;
+            flex-direction: column;
+        
+        }
+
+
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        #top-bar {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 10px;
+            margin-top: 0px;
+            padding-top: 1%;
+            font-size: 35px;
+            font-weight: bold;
+            display: flex;
+        }
+
+        #top-bar .chat-btn {
+            margin-left: auto;
+            margin-right: 50px;
+        }
+        #top-bar .chat-btn button{
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 10px;
+            display: inline-block;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #top-bar-head {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #container {
+            width: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            margin-top: 40px;
+        }
+        #container form {
+            width: 95%;
+            height: 300px;
+            display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+            padding: 10px;
+            margin: auto;
+        }
+
+
+.input-wrapper {
+    width: 500px;
+    height: 50px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+}
+
+.input-wrapper label {
+    grid-column: 1/ span 1;
+}
+
+.input-wrapper input {
+    grid-column: 2 / span 1;
+    margin-left: -150px;
+    width: 200px;
+    height: 30px;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+
+}
+
+.button-wrapper {
+    grid-column: 2 / span 1;
+    grid-row: span 2;
+}
+
+button[type="submit"] {
+    width: 200px;
+    height: 40px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-left: 110px;
+    
+}
+
+        #submit {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    /* padding: 3%; */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+}
+
+#submit:hover {
+    background-color: #d04949; /* Darker Green */
+}
+    
+#output {
+    border-top: 2px solid #f2f2f2;
+    width: 90%;
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: auto;
+    margin-top: 50px;
+    padding: 10px;
+}
+#google_translate_element {
+            margin-left: 30px;
+            width: 300px;
+            /* background-color: red; */
+            
+        }
+
+        #output .card{
+            width: 200px;
+            height: 280px;
+            margin-top: 30px;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 44px;
+            font-size: 16px;
+            display: inline-block;
+            background-color: white;
+            font-family: 'exo 2';
+            /* backdrop-filter: blur(10px); */
+            transition: 0.25s ease-in-out;
+            
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #52796f;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background-color: #f2f2f2;
+        }
+        #output .card .card-header{
+            height: 30px;
+            color: #413d3d;
+            padding: 10px;
+            margin-top: 10px;
+            padding-top: 1%;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: inherit;
+        }
+        #output .card .card-content{
+            height: 180px;
+            padding: 5px;
+            margin-top: 5px;
+            font-size: 15px;
+            text-align: center;
+            overflow-y: auto;
+            
+
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            scale: 1.05;
+            transition: 0.3s ease-in-out;
+
+        }
+    </style>
+</head>
+<body onload="typeWriter()">
+ 
+
+    
+
+
+    <div id="top-bar">
+        <div id="google_translate_element"></div>
+        <span id="top-bar-head">AI Enabled Agricultural Optimization</span>
+        <div class="chat-btn">
+            <button id="submit" onclick="window.location.href='/chatBot'">ChatBot</button>
+        </div>
+    </div>
+
+        <div id="google_translate_element"></div>
+        <div id="container">
+            <form id="inputs" action="{{ url_for("crop_data")}}" method="post">
+                <div class="input-wrapper">
+                    <label for="nitrogen"> Nitrogen:</label>
+                    <input type="text" id="nitrogen" name="nitrogen" required>
+                </div>
+                <div class="input-wrapper">
+                    <label for="phosphorus">Phosphorus:</label>
+                    <input type="text" id="phosphorus" name="phosphorus" required>
+                </div>
+                <div class="input-wrapper">
+                    <label for="potassium">Potassium:</label>
+                    <input type="text" id="potassium" name="potassium" required>
+                </div>
+                <div class="input-wrapper">
+                    <label for="temperature">Temperature:</label>
+                    <input type="text" id="temperature" name="temperature" required>
+                </div>
+                <div class="input-wrapper">
+                    <label for="humidity">Humidity:</label>
+                    <input type="text" id="humidity" name="humidity" required>
+                </div>
+                <div class="input-wrapper">
+                    <label for="rainfall">Rainfall:</label>
+                    <input type="text" id="rainfall" name="rainfall" required>
+                </div>
+                <div class="input-wrapper">
+                    <label for="ph">pH:</label>
+                    <input type="text" id="ph" name="ph" required>
+                </div>
+                <div class="submit-btn">
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+            
+</div>
+    {% if a %}
+    <div id="output">
+        <!-- <div class="card">
+            <div class="type-card">
+                <p id="type-effect"></p>
+            </div>
+        </div> -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Crop Name:</h3>
+            </div>
+           <div class="card-content" >
+                <p id="data1"></p>
+           </div>
+        </div>
+        {% endif %}
+        {% if spacing %}
+        <div class="card">
+            <div class="card-header">
+                <h3>Spacing:</h3>
+            </div>
+            <div class="card-content">
+                <p id="data2"></p>
+            </div>
+        </div>
+        {% endif %}
+        {% if timeofsowing %}
+        <div class="card">
+            <div class="card-header">
+                <h3>Time of Sowing:</h3>
+            </div>
+            <div class="card-content">
+                <p id="data3"></p>
+            </div>
+        </div>
+        {% endif %}
+        {% if methodofsowing %}
+        <div class="card">
+            <div class="card-header">
+                <h3>Method of Sowing:</h3>
+            </div>
+            <div class="card-content">
+                <p id="data4"></p>
+            </div>
+        </div>
+        {% endif %}
+        {% if timeofwater %}
+        <div class="card">
+            <div class="card-header">
+                <h3>Time of Water:</h3>
+            </div>
+            <div class="card-content">
+                <p id="data5"></p>
+                </div>
+        </div>
+        {% endif %}
+        {% if nutrientrecommendation %}
+        <div class="card">
+            <div class="card-header">
+                <h3>Nutrient Recommendation:</h3>
+            </div>
+
+            <div class="card-content">
+                <p id="data6"></p>
+            </div>
+        </div>
+        {% endif %}
+        {% if weedmanagement %}
+        <div class="card">
+            <div class="card-header">
+                <h3>Weed Management:</h3>
+            </div>
+            <div class="card-content">
+                <p id="data7"></p>
+                </div>
+        </div>
+        {% endif %}
+        {% if insectmanagement %}
+        <div class="card">
+            <div class="card-header">
+                <h3>Insect Management:</h3>
+            </div>
+            <div class="card-content">
+                <p id="data8"></p>
+                </div>
+        </div>
+        {% endif %}
+        {% if diseasemanagement %}
+        <div class="card">
+            <div class="card-header">
+                <h3>Disease Management:</h3>
+            </div>
+            <div class="card-content">
+                <p id="data9"></p>
+                </div>
+        </div>
+        {% endif %}
+        {% if strawyield %}
+        <div class="card">
+            <div class="card-header">
+                <h3>Straw Yield:</h3>
+            </div>
+            <div class="card-content">
+                <p id="data10"></p>
+                 </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <script>
+        {% if a %}
+        let data1 = {{ a | tojson | safe }};
+        {% endif %}
+        {% if spacing %}
+        let data2 = {{ spacing | tojson | safe }};
+        {% endif %}
+        {% if timeofsowing %}
+        let data3 = {{ timeofsowing | tojson | safe }};
+        {% endif %}
+        {% if methodofsowing %}
+        let data4 = {{ methodofsowing | tojson | safe }};
+        {% endif %}
+        {% if timeofwater %}
+        let data5 = {{ timeofwater | tojson | safe }};
+        {% endif %}
+        {% if nutrientrecommendation %}
+        let data6 = {{ nutrientrecommendation | tojson | safe }};
+        {% endif %}
+        {% if weedmanagement %}
+        let data7 = {{ weedmanagement | tojson | safe }};
+        {% endif %}
+        {% if insectmanagement %}
+        let data8 = {{ insectmanagement | tojson | safe }};
+        {% endif %}
+        {% if diseasemanagement %}
+        let data9 = {{ diseasemanagement | tojson | safe }};
+        {% endif %}
+        {% if strawyield %}
+        let data10 = {{ strawyield | tojson | safe }};
+        {% endif %}
+    
+        console.log("data1", data1);
+        console.log("data2", data2);
+        console.log("data3", data3);
+        console.log("data4", data4);
+        console.log("data5", data5);
+        console.log("data6", data6);
+        console.log("data7", data7);
+        console.log("data8", data8);
+        console.log("data9", data9);
+        console.log("data10", data10);
+    
+        var i = 0;
+        var speed = 70;
+    
+        function typeWriter() {
+            {% if a %}
+            document.getElementById("data1").innerHTML += data1.charAt(i);
+            {% endif %}
+            {% if spacing %}
+            document.getElementById("data2").innerHTML += data2.charAt(i);
+            {% endif %}
+            {% if timeofsowing %}
+            document.getElementById("data3").innerHTML += data3.charAt(i);
+            {% endif %}
+            {% if methodofsowing %}
+            document.getElementById("data4").innerHTML += data4.charAt(i);
+            {% endif %}
+            {% if timeofwater %}
+            document.getElementById("data5").innerHTML += data5.charAt(i);
+            {% endif %}
+            {% if nutrientrecommendation %}
+            document.getElementById("data6").innerHTML += data6.charAt(i);
+            {% endif %}
+            {% if weedmanagement %}
+            document.getElementById("data7").innerHTML += data7.charAt(i);
+            {% endif %}
+            {% if insectmanagement %}
+            document.getElementById("data8").innerHTML += data8.charAt(i);
+            {% endif %}
+            {% if diseasemanagement %}
+            document.getElementById("data9").innerHTML += data9.charAt(i);
+            {% endif %}
+            {% if strawyield %}
+            document.getElementById("data10").innerHTML += data10.charAt(i);
+            {% endif %}
+            i++;
+            setTimeout(typeWriter, speed);
+        }
+        typeWriter();
+    </script>
+
+    
+</body>
+</html>
