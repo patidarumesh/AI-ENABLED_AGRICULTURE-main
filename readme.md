@@ -1,4 +1,4 @@
-# AI Enabled Agriculture
+# AI Enabled Smart Farming using Machine Learning
 
 This repository contains a Flask web application that integrates a context-aware chatbot powered by Gemini, an AI model developed for natural language processing tasks. The chatbot is tailored for providing information and assistance related to crops and agriculture.
 
@@ -23,7 +23,7 @@ Follow these instructions to set up the project on your local machine:
 1. Clone this repository to your local machine:
 
    ```
-   git clone <repository_url>
+   git clone https://github.com/patidarumesh/AI-ENABLED_AGRICULTURE-main.git
    ```
 
 2. Install the required Python dependencies using pip
