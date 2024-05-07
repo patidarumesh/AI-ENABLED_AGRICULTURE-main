@@ -51,7 +51,7 @@ details_data = pd.read_json('crop_details.json')
 
 # Define columns for input data
 columns = ["N", "P", "K", "temperature", "humidity", "ph", "rainfall"]
-
+# Get API from here: https://openrouter.ai/
 # @app.before_request
 # def before_request():
 #     g.chatbot = ContextAwareGeminiChatbot(api_key="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", model="google/gemma-7b-it:free")
